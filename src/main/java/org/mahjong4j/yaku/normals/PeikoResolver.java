@@ -15,7 +15,8 @@ public abstract class PeikoResolver implements NormalYakuResolver {
 
         Shuntsu stockOne = null;
         Shuntsu stockTwo = null;
-
+        Shuntsu stockThree = null;
+        // 需要注意判断一色三通顺这样的奇怪牌型
         int peiko = 0;
         for (Shuntsu shuntsu : shuntsuList) {
             //鳴いている場合はfalse
@@ -29,8 +30,10 @@ public abstract class PeikoResolver implements NormalYakuResolver {
             }
 
             //１つ目の盃口が見つかった
-            if (stockOne.equals(shuntsu) && peiko == 0) {
-                peiko = 1;
+            if (stockOne.equals(shuntsu)) {
+                stockOne = stockTwo;
+                stockTwo = stockThree;
+                peiko += 1;
                 continue;
             }
 
@@ -40,7 +43,19 @@ public abstract class PeikoResolver implements NormalYakuResolver {
             }
 
             if (stockTwo.equals(shuntsu)) {
-                return 2;
+                stockTwo = stockThree;
+                peiko += 1;
+                continue;
+            }
+
+            if (stockThree == null) {
+                stockThree = shuntsu;
+                continue;
+            }
+
+            if (stockThree.equals(shuntsu)) {
+                peiko += 1;
+                stockThree = null;
             }
         }
         return peiko;

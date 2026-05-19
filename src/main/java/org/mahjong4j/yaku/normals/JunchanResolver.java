@@ -36,6 +36,12 @@ public class JunchanResolver implements NormalYakuResolver {
         if (janto == null) {
             return false;
         }
+
+        int jantoNum = janto.getTile().getNumber();
+        if (jantoNum != 1 && jantoNum != 9) {
+            return false;
+        }
+
         for (Shuntsu shuntsu : shuntsuList) {
             int num = shuntsu.getTile().getNumber();
             if (num != 2 && num != 8) {

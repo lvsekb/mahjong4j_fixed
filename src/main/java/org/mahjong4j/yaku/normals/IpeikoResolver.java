@@ -1,5 +1,6 @@
 package org.mahjong4j.yaku.normals;
 
+import org.mahjong4j.hands.Kotsu;
 import org.mahjong4j.hands.MentsuComp;
 import org.mahjong4j.hands.Shuntsu;
 
@@ -17,9 +18,12 @@ import static org.mahjong4j.yaku.normals.NormalYaku.IPEIKO;
 public class IpeikoResolver extends PeikoResolver implements NormalYakuResolver {
     private final NormalYaku yakuEnum = IPEIKO;
     private final List<Shuntsu> shuntsuList;
+    private final List<Kotsu> kotsuList;
 
     public IpeikoResolver(MentsuComp comp) {
+
         shuntsuList = comp.getShuntsuList();
+        kotsuList = comp.getKotsuList();
     }
 
     public NormalYaku getNormalYaku() {
@@ -28,6 +32,11 @@ public class IpeikoResolver extends PeikoResolver implements NormalYakuResolver 
 
     public boolean isMatch() {
         //二盃口とは複合しない
+        for(Kotsu kotsu: kotsuList){
+            if(kotsu.isOpen()){
+                return false;
+            }
+        }
         return peiko(shuntsuList) == 1;
     }
 }

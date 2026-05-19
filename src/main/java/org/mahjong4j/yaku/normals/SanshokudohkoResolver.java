@@ -2,6 +2,7 @@ package org.mahjong4j.yaku.normals;
 
 import org.mahjong4j.hands.Kotsu;
 import org.mahjong4j.hands.MentsuComp;
+import org.mahjong4j.hands.Shuntsu;
 import org.mahjong4j.tile.TileType;
 
 import java.util.List;
@@ -33,23 +34,45 @@ public class SanshokudohkoResolver extends SanshokuResolver implements NormalYak
             return false;
         }
 
-        Kotsu candidate = null;
+        Kotsu candidate1 = null;
+        Kotsu candidate2 = null;
+        Kotsu real_canditate = null;
+
         for (Kotsu kotsu : kotsuList) {
             TileType shuntsuType = kotsu.getTile().getType();
             int shuntsuNum = kotsu.getTile().getNumber();
 
-            if (candidate == null) {
-                candidate = kotsu;
+            if (candidate1 == null) {
+                candidate1 = kotsu;
                 continue;
             }
 
-            if (candidate.getTile().getNumber() == shuntsuNum) {
-                detectType(shuntsuType);
-                detectType(candidate.getTile().getType());
-            } else {
-                candidate = kotsu;
+            if(real_canditate == null){
+                if (candidate1.getTile().getNumber() == shuntsuNum) {
+                    real_canditate = candidate1;
+                    detectType(shuntsuType);
+                    detectType(candidate1.getTile().getType());
+                } else {
+                    if(candidate2 == null){
+                        candidate2 = kotsu;
+                    }
+                    else{
+                        if(candidate2.getTile().getNumber() == shuntsuNum){
+                            real_canditate = candidate2;
+                            detectType(shuntsuType);
+                            detectType(candidate2.getTile().getType());
+                        }
+                    }
+                }
+                continue;
             }
+
+            if(real_canditate.getTile().getNumber() == shuntsuNum){
+                detectType(shuntsuType);
+            }
+
         }
+
         return manzu && pinzu && sohzu;
     }
 }
