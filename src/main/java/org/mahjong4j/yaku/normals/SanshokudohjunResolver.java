@@ -48,7 +48,8 @@ public class SanshokudohjunResolver extends SanshokuResolver implements NormalYa
                 detectType(shuntsuType);
                 detectType(candidate.getTile().getType());
             } else {
-                candidate = shuntsu;
+//                candidate = shuntsu;
+                continue;
             }
         }
         return manzu && pinzu && sohzu;
